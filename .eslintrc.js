@@ -23,7 +23,7 @@ module.exports = {
         browser: true,
         es6: true,
     },
-    plugins: ['react', 'react-hooks', 'prettier', '@typescript-eslint'],
+    plugins: ['react', 'react-hooks', /*'prettier'*/, '@typescript-eslint'],
     extends: [
         // 'standard',
         'eslint:recommended',
@@ -33,7 +33,7 @@ module.exports = {
     ],
     rules: {
         eqeqeq: 'error',
-        'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+        //'prettier/prettier': ['error', {}, { usePrettierrc: true }],
         // TypeScript can infer this significantly better than eslint ever can.
         'react/prop-types': 0,
         'react/display-name': 0,
