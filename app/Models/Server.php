@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Pterodactyl\Exceptions\Http\Server\ServerStateConflictException;
+use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\Wipe;
+use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\WipeMap;
 
 /**
  * \Pterodactyl\Models\Server.
@@ -150,6 +152,7 @@ class Server extends Model
         'name' => 'required|string|min:1|max:191',
         'node_id' => 'required|exists:nodes,id',
         'description' => 'string',
+        'timezone' => 'nullable|string',
         'status' => 'nullable|string',
         'memory' => 'required|numeric|min:0',
         'swap' => 'required|numeric|min:-1',
@@ -260,6 +263,22 @@ class Server extends Model
     public function egg(): HasOne
     {
         return $this->hasOne(Egg::class, 'id', 'egg_id');
+    }
+
+    /**
+     * Gets all wipes associated with this server.
+     */
+    public function wipes(): HasMany
+    {
+        return $this->hasMany(Wipe::class, 'server_id');
+    }
+
+    /**
+     * Gets all wipe maps associated with this server.
+     */
+    public function wipemaps(): HasMany
+    {
+        return $this->hasMany(WipeMap::class, 'server_id');
     }
 
     /**

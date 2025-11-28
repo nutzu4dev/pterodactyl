@@ -1,0 +1,1 @@
+- { Signature: "p:server:wipe", Description: "Checks for and excecutes due Rust server wipes.", Path: "RustWipeCommand.php", Interval: "everyMinute" }

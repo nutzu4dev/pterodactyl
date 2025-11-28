@@ -4,6 +4,6 @@
 
 return [
   'disks' => [
-    /* blueprint/disks */
+    /* blueprint/disks *//* RustserverwiperStart */ 'blueprint:rustserverwiper' => [ 'driver' => 'local', 'root' => storage_path('extensions/rustserverwiper'), 'url' => env('APP_URL') . '/fs/extensions/rustserverwiper', 'visibility' => 'public', 'throw' => false, ], 'blueprint_private:rustserverwiper' => [ 'driver' => 'local', 'root' => storage_path('.extensions/rustserverwiper'), 'throw' => false, ], /* RustserverwiperEnd */
   ],
 ];

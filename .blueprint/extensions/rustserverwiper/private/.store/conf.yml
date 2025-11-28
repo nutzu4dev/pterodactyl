@@ -1,0 +1,37 @@
+info:
+  name: "Rust Server Wiper"
+  identifier: "rustserverwiper"
+  description: "With this Pterodactyl addon you can automatically schedule wipe your rust servers."
+  flags: ""
+  version: "v5.4"
+  target: "beta-2024-12"
+  author: "UndercoverNL"
+  icon: "icon.png"
+  website: "https://builtbybit.com/resources/pterodactyl-v1-addon-rust-server-wiper.25458/"
+
+admin:
+  view: "view.blade.php"
+  controller: ""
+  css: ""
+  wrapper: ""
+
+dashboard:
+  css: ""
+  wrapper: ""
+  components: "components"
+
+data:
+  directory: "scripts"
+  public: ""
+  console: "commands"
+
+requests:
+  views: ""
+  app: "app"
+  routers:
+    application: ""
+    client: "routes.php"
+    web: ""
+
+database:
+  migrations: "migrations"

@@ -1,0 +1,4 @@
+# Components.yml
+Navigation:
+  Routes:
+    - { Name: "Rust Wipe", Path: "/wipe", Type: "server", Component: "RustWipeContainer" }

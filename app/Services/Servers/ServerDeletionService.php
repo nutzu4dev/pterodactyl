@@ -77,6 +77,13 @@ class ServerDeletionService
                 }
             }
 
+            foreach($server->wipes as $wipe) {
+                $wipe->delete();
+                foreach($wipe->commands as $command) {
+                    $command->delete();
+                }
+            }
+
             $server->delete();
         });
     }

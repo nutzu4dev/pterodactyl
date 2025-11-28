@@ -17,6 +17,7 @@ export interface Server {
   uuid: string;
   name: string;
   node: string;
+  timezone: string;
   isNodeUnderMaintenance: boolean;
   status: ServerStatus;
   sftpDetails: {
@@ -55,6 +56,7 @@ export const rawDataToServerObject = ({ attributes: data }: FractalResponseData)
   uuid: data.uuid,
   name: data.name,
   node: data.node,
+  timezone: data.timezone,
   isNodeUnderMaintenance: data.is_node_under_maintenance,
   status: data.status,
   invocation: data.invocation,

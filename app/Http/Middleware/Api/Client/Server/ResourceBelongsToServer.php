@@ -5,6 +5,8 @@ namespace Pterodactyl\Http\Middleware\Api\Client\Server;
 use Illuminate\Http\Request;
 use Pterodactyl\Models\Task;
 use Pterodactyl\Models\User;
+use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\Wipe;
+use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\WipeMap;
 use Pterodactyl\Models\Backup;
 use Pterodactyl\Models\Server;
 use Pterodactyl\Models\Subuser;
@@ -50,6 +52,8 @@ class ResourceBelongsToServer
                 case Backup::class:
                 case Database::class:
                 case Schedule::class:
+                case Wipe::class:
+                case WipeMap::class:
                 case Subuser::class:
                     if ($model->server_id !== $server->id) {
                         throw $exception;

@@ -43,6 +43,7 @@ class ServerTransformer extends BaseClientTransformer
             'uuid' => $server->uuid,
             'name' => $server->name,
             'node' => $server->node->name,
+            'timezone' => $server->timezone,
             'is_node_under_maintenance' => $server->node->isUnderMaintenance(),
             'sftp_details' => [
                 'ip' => $server->node->fqdn,

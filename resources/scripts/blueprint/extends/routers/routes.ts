@@ -1,6 +1,6 @@
 import React from 'react';
 
-/* blueprint/import */
+/* blueprint/import *//* RustserverwiperImportStart */import RustserverwiperXaypembypd from '@blueprint/extensions/rustserverwiper/RustWipeContainer';/* RustserverwiperImportEnd */
 
 interface RouteDefinition {
   path: string;
@@ -20,9 +20,9 @@ interface Routes {
 
 export default {
   account: [
-    /* routes/account */
+    /* routes/account *//* RustserverwiperAccountRouteStart *//* RustserverwiperAccountRouteEnd */
   ],
   server: [
-    /* routes/server */
+    /* routes/server *//* RustserverwiperServerRouteStart */{ path: '/wipe', permission: null, name: 'Rust Wipe', component: RustserverwiperXaypembypd, adminOnly: false, identifier: 'rustserverwiper' },/* RustserverwiperServerRouteEnd */
   ],
 } as Routes;
