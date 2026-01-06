@@ -23,10 +23,6 @@ import { FileActionCheckbox } from '@/components/server/files/SelectFileCheckbox
 import { hashToPath } from '@/helpers';
 import style from './style.module.css';
 
-import BeforeContent from '@blueprint/components/Server/Files/Browse/BeforeContent';
-import FileButtons from '@blueprint/components/Server/Files/Browse/FileButtons';
-import AfterContent from '@blueprint/components/Server/Files/Browse/AfterContent';
-
 const sortFiles = (files: FileObject[]): FileObject[] => {
     const sortedFiles: FileObject[] = files
         .sort((a, b) => a.name.localeCompare(b.name))
@@ -66,7 +62,6 @@ export default () => {
     return (
         <ServerContentBlock title={'File Manager'} showFlashKey={'files'}>
             <ErrorBoundary>
-                <BeforeContent />
                 <div className={'flex flex-wrap-reverse md:flex-nowrap mb-4'}>
                     <FileManagerBreadcrumbs
                         renderLeft={
@@ -81,7 +76,6 @@ export default () => {
                     <Can action={'file.create'}>
                         <div className={style.manager_actions}>
                             <FileManagerStatus />
-                            <FileButtons />
                             <NewDirectoryButton />
                             <UploadButton />
                             <NavLink to={`/server/${id}/files/new${window.location.hash}`}>
@@ -117,7 +111,6 @@ export default () => {
                     )}
                 </>
             )}
-            <AfterContent />
         </ServerContentBlock>
     );
 };

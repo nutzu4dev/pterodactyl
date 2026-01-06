@@ -48,17 +48,14 @@ class Kernel extends HttpKernel
         ConvertEmptyStringsToNull::class,
     ];
 
+    protected $middlewarePriority = [
+        SubstituteClientBindings::class,
+    ];
+
     /**
      * The application's route middleware groups.
      */
     protected $middlewareGroups = [
-        /* Blueprint middleware */
-        'blueprint' => [EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, VerifyCsrfToken::class, SubstituteBindings::class, LanguageMiddleware::class,],
-        'blueprint/api' => [EnsureStatefulRequests::class, 'auth:sanctum', IsValidJson::class, TrackAPIKey::class, RequireTwoFactorAuthentication::class, AuthenticateIPAccess::class,],
-        'blueprint/application-api' => [SubstituteBindings::class, AuthenticateApplicationUser::class,],
-        'blueprint/client-api' => [SubstituteClientBindings::class, RequireClientApiKey::class,],
-
-        /* Pterodactyl middleware */
         'web' => [
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,

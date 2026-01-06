@@ -13,9 +13,6 @@ import Fade from '@/components/elements/Fade';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import { useDeepMemoize } from '@/plugins/useDeepMemoize';
 
-import BeforeContent from '@blueprint/components/Server/Databases/BeforeContent';
-import AfterContent from '@blueprint/components/Server/Databases/AfterContent';
-
 export default () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
     const databaseLimit = ServerContext.useStoreState((state) => state.server.data!.featureLimits.databases);
@@ -47,7 +44,6 @@ export default () => {
             ) : (
                 <Fade timeout={150}>
                     <>
-                        <BeforeContent />
                         {databases.length > 0 ? (
                             databases.map((database, index) => (
                                 <DatabaseRow
@@ -76,7 +72,6 @@ export default () => {
                                 )}
                             </div>
                         </Can>
-                        <AfterContent />
                     </>
                 </Fade>
             )}

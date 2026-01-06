@@ -15,9 +15,6 @@ import CopyOnClick from '@/components/elements/CopyOnClick';
 import { ip } from '@/lib/formatters';
 import { Button } from '@/components/elements/button/index';
 
-import BeforeContent from '@blueprint/components/Server/Settings/BeforeContent';
-import AfterContent from '@blueprint/components/Server/Settings/AfterContent';
-
 export default () => {
     const username = useStoreState((state) => state.user.data!.username);
     const id = ServerContext.useStoreState((state) => state.server.data!.id);
@@ -28,7 +25,6 @@ export default () => {
     return (
         <ServerContentBlock title={'Settings'}>
             <FlashMessageRender byKey={'settings'} css={tw`mb-4`} />
-            <BeforeContent />
             <div css={tw`md:flex`}>
                 <div css={tw`w-full md:flex-1 md:mr-10`}>
                     <Can action={'file.sftp'}>
@@ -85,7 +81,6 @@ export default () => {
                     </Can>
                 </div>
             </div>
-            <AfterContent />
         </ServerContentBlock>
     );
 };

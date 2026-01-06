@@ -65,8 +65,6 @@ class Permission extends Model
 
     public const ACTION_ACTIVITY_READ = 'activity.read';
 
-    public const ACTION_WIPE_MANAGE = 'wipe.manage';
-
     /**
      * Should timestamps be used on this model.
      */
@@ -199,13 +197,6 @@ class Permission extends Model
             'keys' => [
                 'rename' => 'Allows a user to rename this server and change the description of it.',
                 'reinstall' => 'Allows a user to trigger a reinstall of this server.',
-            ],
-        ],
-
-        'wipe' => [
-            'description' => 'Permissions that control a user\'s access to the rust server wiper.',
-            'keys' => [
-                'manage' => 'Allows a user to use the rust wiper for the server.',
             ],
         ],
 

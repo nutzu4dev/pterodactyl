@@ -8,11 +8,10 @@ use Znck\Eloquent\Traits\BelongsToThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Pterodactyl\Exceptions\Http\Server\ServerStateConflictException;
-use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\Wipe;
-use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\WipeMap;
 
 /**
  * \Pterodactyl\Models\Server.
@@ -47,26 +46,26 @@ use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\WipeMap;
  * @property \Illuminate\Support\Carbon|null $installed_at
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\ActivityLog[] $activity
  * @property int|null $activity_count
- * @property \Pterodactyl\Models\Allocation|null $allocation
+ * @property Allocation|null $allocation
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\Allocation[] $allocations
  * @property int|null $allocations_count
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\Backup[] $backups
  * @property int|null $backups_count
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\Database[] $databases
  * @property int|null $databases_count
- * @property \Pterodactyl\Models\Egg|null $egg
+ * @property Egg|null $egg
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\Mount[] $mounts
  * @property int|null $mounts_count
- * @property \Pterodactyl\Models\Nest $nest
- * @property \Pterodactyl\Models\Node $node
+ * @property Nest $nest
+ * @property Node $node
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property int|null $notifications_count
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\Schedule[] $schedules
  * @property int|null $schedules_count
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\Subuser[] $subusers
  * @property int|null $subusers_count
- * @property \Pterodactyl\Models\ServerTransfer|null $transfer
- * @property \Pterodactyl\Models\User $user
+ * @property ServerTransfer|null $transfer
+ * @property User $user
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\EggVariable[] $variables
  * @property int|null $variables_count
  *
@@ -106,6 +105,8 @@ use Pterodactyl\BlueprintFramework\Extensions\rustserverwiper\Models\WipeMap;
  */
 class Server extends Model
 {
+    /** @use HasFactory<\Database\Factories\ServerFactory> */
+    use HasFactory;
     use BelongsToThrough;
     use Notifiable;
 
@@ -152,7 +153,6 @@ class Server extends Model
         'name' => 'required|string|min:1|max:191',
         'node_id' => 'required|exists:nodes,id',
         'description' => 'string',
-        'timezone' => 'nullable|string',
         'status' => 'nullable|string',
         'memory' => 'required|numeric|min:0',
         'swap' => 'required|numeric|min:-1',
@@ -166,7 +166,7 @@ class Server extends Model
         'egg_id' => 'required|exists:eggs,id',
         'startup' => 'required|string',
         'skip_scripts' => 'sometimes|boolean',
-        'image' => ['required', 'string', 'max:191', 'regex:/^[\w\.\/\-:@ ]*$/'],
+        'image' => ['required', 'string', 'max:191', 'regex:/^~?[\w\.\/\-:@ ]*$/'],
         'database_limit' => 'present|nullable|integer|min:0',
         'allocation_limit' => 'sometimes|nullable|integer|min:0',
         'backup_limit' => 'present|nullable|integer|min:0',
@@ -219,6 +219,8 @@ class Server extends Model
 
     /**
      * Gets the user who owns the server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -227,6 +229,8 @@ class Server extends Model
 
     /**
      * Gets the subusers associated with a server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Subuser, $this>
      */
     public function subusers(): HasMany
     {
@@ -235,6 +239,8 @@ class Server extends Model
 
     /**
      * Gets the default allocation for a server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\Pterodactyl\Models\Allocation, $this>
      */
     public function allocation(): HasOne
     {
@@ -243,6 +249,8 @@ class Server extends Model
 
     /**
      * Gets all allocations associated with this server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Allocation, $this>
      */
     public function allocations(): HasMany
     {
@@ -251,6 +259,8 @@ class Server extends Model
 
     /**
      * Gets information for the nest associated with this server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Nest, $this>
      */
     public function nest(): BelongsTo
     {
@@ -259,6 +269,8 @@ class Server extends Model
 
     /**
      * Gets information for the egg associated with this server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\Pterodactyl\Models\Egg, $this>
      */
     public function egg(): HasOne
     {
@@ -266,23 +278,9 @@ class Server extends Model
     }
 
     /**
-     * Gets all wipes associated with this server.
-     */
-    public function wipes(): HasMany
-    {
-        return $this->hasMany(Wipe::class, 'server_id');
-    }
-
-    /**
-     * Gets all wipe maps associated with this server.
-     */
-    public function wipemaps(): HasMany
-    {
-        return $this->hasMany(WipeMap::class, 'server_id');
-    }
-
-    /**
      * Gets information for the service variables associated with this server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\EggVariable, $this>
      */
     public function variables(): HasMany
     {
@@ -301,6 +299,8 @@ class Server extends Model
 
     /**
      * Gets information for the node associated with this server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\Pterodactyl\Models\Node, $this>
      */
     public function node(): BelongsTo
     {
@@ -309,6 +309,8 @@ class Server extends Model
 
     /**
      * Gets information for the tasks associated with this server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Schedule, $this>
      */
     public function schedules(): HasMany
     {
@@ -317,6 +319,8 @@ class Server extends Model
 
     /**
      * Gets all databases associated with a server.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Database, $this>
      */
     public function databases(): HasMany
     {
@@ -326,21 +330,28 @@ class Server extends Model
     /**
      * Returns the location that a server belongs to.
      *
+     * @return \Znck\Eloquent\Relations\BelongsToThrough<\Pterodactyl\Models\Location, \Pterodactyl\Models\Node>
+     *
      * @throws \Exception
      */
     public function location(): \Znck\Eloquent\Relations\BelongsToThrough
     {
-        return $this->belongsToThrough(Location::class, Node::class);
+        return $this->belongsToThrough(Location::class, Node::class); // @phpstan-ignore return.type
     }
 
     /**
      * Returns the associated server transfer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\Pterodactyl\Models\ServerTransfer, $this>
      */
     public function transfer(): HasOne
     {
         return $this->hasOne(ServerTransfer::class)->whereNull('successful')->orderByDesc('id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\Pterodactyl\Models\Backup, $this>
+     */
     public function backups(): HasMany
     {
         return $this->hasMany(Backup::class);
@@ -348,6 +359,8 @@ class Server extends Model
 
     /**
      * Returns all mounts that have this server has mounted.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough<\Pterodactyl\Models\Mount, \Pterodactyl\Models\MountServer, $this>
      */
     public function mounts(): HasManyThrough
     {
@@ -356,6 +369,8 @@ class Server extends Model
 
     /**
      * Returns all of the activity log entries where the server is the subject.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany<\Pterodactyl\Models\ActivityLog, $this>
      */
     public function activity(): MorphToMany
     {
@@ -367,16 +382,16 @@ class Server extends Model
      * exception is raised. This should be called whenever something needs to make
      * sure the server is not in a weird state that should block user access.
      *
-     * @throws \Pterodactyl\Exceptions\Http\Server\ServerStateConflictException
+     * @throws ServerStateConflictException
      */
     public function validateCurrentState()
     {
         if (
-            $this->isSuspended() ||
-            $this->node->isUnderMaintenance() ||
-            !$this->isInstalled() ||
-            $this->status === self::STATUS_RESTORING_BACKUP ||
-            !is_null($this->transfer)
+            $this->isSuspended()
+            || $this->node->isUnderMaintenance()
+            || !$this->isInstalled()
+            || $this->status === self::STATUS_RESTORING_BACKUP
+            || !is_null($this->transfer)
         ) {
             throw new ServerStateConflictException($this);
         }
@@ -391,9 +406,9 @@ class Server extends Model
     public function validateTransferState()
     {
         if (
-            !$this->isInstalled() ||
-            $this->status === self::STATUS_RESTORING_BACKUP ||
-            !is_null($this->transfer)
+            !$this->isInstalled()
+            || $this->status === self::STATUS_RESTORING_BACKUP
+            || !is_null($this->transfer)
         ) {
             throw new ServerStateConflictException($this);
         }
